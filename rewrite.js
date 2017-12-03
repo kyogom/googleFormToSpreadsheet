@@ -12,10 +12,10 @@ function fetchAndWrite() {
   //書き込み先のシートを取得
   var sheet = SpreadsheetApp.getActiveSheet();
   //アンケート回答をanswersに格納
-  var sheetAns = SpreadsheetApp.getActive().getSheetByName('回答');
+  var sheetAns = SpreadsheetApp.getActive().getSheetByName('フォームの回答 1');
   var answers = sheetAns.getDataRange().getValues();
   
-  //回答を成形
+  //回答を格納
   var date = new Array();
   var name = new Array();
   var price = new Array();
@@ -23,23 +23,16 @@ function fetchAndWrite() {
   var who = new Array(); 
   for(var i = 0 ; i < answers.length; i++) {
     if(answers[i][0] != '' && i > 0) {
+      //空白除去などの成形する場合はここで。
       date.push(answers[i][0]);
       name.push(answers[i][1]);
       price.push(answers[i][2]);
-      if(answers[i][3] == '割り勘') {
-        w_t.push('w');
-      } else {
-        w_t.push('t');
-      }
-      if(answers[i][4] == '恭吾') {
-        who.push('k');
-      } else {
-        who.push('h');
-      }
+      w_t.push(answers[i][3]);
+      who.push(answers[i][4]);
     }
   }
   
-  //書き込み先のセルを取得 lastRow = 書き込み先の行番号
+  //書き込み先のセルを取得 lastRow = 書き込み先の最終行番号
   var lastRow = sheet.getRange("A1:A").getValues().filter(String).length + 1;
   for(var j = 0 ; j < name.length ; j++) {
     sheet.getRange(lastRow + j, 1).setValue(name[0 + j])  //A列の最後のセルに書き込み
